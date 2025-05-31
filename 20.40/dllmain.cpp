@@ -1,19 +1,26 @@
-// dllmain.cpp : Defines the entry point for the DLL application.
-#include "pch.h"
+#include "framework.h"
 
-BOOL APIENTRY DllMain( HMODULE hModule,
-                       DWORD  ul_reason_for_call,
-                       LPVOID lpReserved
-                     )
+void Main() {
+    AllocConsole();
+    FILE* F;
+    freopen_s(&F, "CONOUT$", "w", stdout);
+    SetConsoleTitleA("20.40: Setting Up");
+    Sleep(5000);
+
+    MH_Initialize();
+
+    MH_EnableHook(MH_ALL_HOOKS);
+    UWorld::GetWorld()->OwningGameInstance->LocalPlayers.Remove(0);
+    UKismetSystemLibrary::ExecuteConsoleCommand(UWorld::GetWorld(), L"open Artemis_Terrain", nullptr);
+}
+
+BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)
 {
-    switch (ul_reason_for_call)
+    switch (Reason)
     {
-    case DLL_PROCESS_ATTACH:
-    case DLL_THREAD_ATTACH:
-    case DLL_THREAD_DETACH:
-    case DLL_PROCESS_DETACH:
-        break;
+    case 1: std::thread(Main).detach();
+    case 0: break;
     }
-    return TRUE;
+    return 1;
 }
 
