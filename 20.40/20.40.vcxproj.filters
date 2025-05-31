@@ -40,6 +40,12 @@
     <ClCompile Include="SDK\SDK\GameplayAbilities_functions.cpp">
       <Filter>SDK\SDK</Filter>
     </ClCompile>
+    <ClCompile Include="Misc.cpp">
+      <Filter>Fortnite\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Replication.cpp">
+      <Filter>Fortnite\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -62,6 +68,15 @@
     </ClInclude>
     <ClInclude Include="SDK\UtfN.hpp">
       <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc.h">
+      <Filter>Fortnite\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="Options.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Replication.h">
+      <Filter>Fortnite\Public</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

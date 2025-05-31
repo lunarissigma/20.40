@@ -9,7 +9,7 @@ class Utils {
 public:
 	template <class _Ot = void*>
 	static void Hook(uint64_t _Ptr, void* _Detour, _Ot& _Orig = _NpFH) {
-		MH_CreateHook((LPVOID)_Ptr, _Detour, (LPVOID*)(is_same_v<_Ot, void*> ? nullptr : &_Orig));
+		MH_CreateHook((LPVOID)_Ptr, _Detour, (LPVOID*)(std::is_same_v<_Ot, void*> ? nullptr : &_Orig));
 	}
 
 	__forceinline static void _HookVT(void** _Vt, uint32_t _Ind, void* _Detour)
@@ -24,34 +24,10 @@ public:
 	__forceinline static void Hook(uint32_t _Ind, void* _Detour, _Ot& _Orig = _NpFH)
 	{
 		auto _Vt = _Ct::GetDefaultObj()->VTable;
-		if (!is_same_v<_Ot, void*>)
+		if (!std::is_same_v<_Ot, void*>)
 			_Orig = (_Ot)_Vt[_Ind];
 
 		_HookVT(_Vt, _Ind, _Detour);
-	}
-
-	template <typename _Ct>
-	__forceinline static void HookEvery(uint32_t _Ind, void* _Detour)
-	{
-		for (int i = 0; i < UObject::GObjects->Num(); i++) {
-			auto Obj = UObject::GObjects->GetByIndex(i);
-			if (Obj && Obj->IsA<_Ct>()) {
-				_HookVT(Obj->VTable, _Ind, _Detour);
-			}
-		}
-	}
-
-	template <typename _Ct, typename _Ot = void*>
-	__forceinline static void ExecHookEvery(const char* ShortName, void* _Detour, _Ot& _Orig = _NpFH)
-	{
-		for (int i = 0; i < UObject::GObjects->Num(); i++)
-		{
-			auto Obj = UObject::GObjects->GetByIndex(i);
-			if (Obj && Obj->IsA<_Ct>())
-			{
-				ExecHook(Obj->Class->FindFunction(ShortName)->GetFullName().c_str(), _Detour, _Orig);
-			}
-		}
 	}
 
 	template <typename _Is>
@@ -147,7 +123,7 @@ public:
 	{
 		if (!_Fn)
 			return;
-		if (!is_same_v<_Ot, void*>)
+		if (!std::is_same_v<_Ot, void*>)
 			_Orig = (_Ot)_Fn->ExecFunction;
 
 		_Fn->ExecFunction = reinterpret_cast<UFunction::FNativeFuncPtr>(_Detour);

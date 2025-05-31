@@ -1,4 +1,5 @@
 #include "framework.h"
+#include "Misc.h"
 
 void Main() {
     AllocConsole();
@@ -8,6 +9,8 @@ void Main() {
     Sleep(5000);
 
     MH_Initialize();
+
+    Misc::Hook();
 
     MH_EnableHook(MH_ALL_HOOKS);
     UWorld::GetWorld()->OwningGameInstance->LocalPlayers.Remove(0);

@@ -8,4 +8,5 @@
 #include <iostream>
 #include "MinHook/MinHook.h"
 #include "SDK/SDK.hpp"
+#include "Options.h"
 using namespace SDK;
