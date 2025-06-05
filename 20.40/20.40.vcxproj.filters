@@ -46,6 +46,9 @@
     <ClCompile Include="Replication.cpp">
       <Filter>Fortnite\Private</Filter>
     </ClCompile>
+    <ClCompile Include="GameMode.cpp">
+      <Filter>Fortnite\Private</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -76,6 +79,9 @@
       <Filter>Utilities</Filter>
     </ClInclude>
     <ClInclude Include="Replication.h">
+      <Filter>Fortnite\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMode.h">
       <Filter>Fortnite\Public</Filter>
     </ClInclude>
   </ItemGroup>

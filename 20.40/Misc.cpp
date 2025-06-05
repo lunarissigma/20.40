@@ -8,11 +8,13 @@ float Misc::GetMaxTickRate()
     return 30.f;
 }
 
+static void(*ServerReplicateActors)(UReplicationDriver* Driver) = decltype(ServerReplicateActors)(Sigma::Offsets::ServerReplicateActors);
+
 static void(*TickFlushOG)(UNetDriver* Driver);
 void Misc::TickFlush(UNetDriver* Driver)
 {
     if (Driver->ReplicationDriver) {
-        Replication::ServerReplicateActors(Driver->ReplicationDriver);
+        ServerReplicateActors(Driver->ReplicationDriver);
     }
 
     return TickFlushOG(Driver);
@@ -33,6 +35,10 @@ bool Misc::ReturnFalse()
     return false;
 }
 
+void Misc::ReturnNull() {
+    return;
+}
+
 void Misc::Hook()
 {
     Utils::Hook(Sigma::Offsets::TickFlush, TickFlush, TickFlushOG);
@@ -40,4 +46,6 @@ void Misc::Hook()
     Utils::Hook(Sigma::Offsets::WorldNetMode, GetNetMode);
     Utils::Hook(Sigma::Offsets::ImageBase + 0x1204e80, ReturnFalse);
     Utils::Hook(Sigma::Offsets::ImageBase + 0x83f36d4, ReturnFalse);
+    for (auto& NullFunc : Sigma::Offsets::NullFuncs)
+        Utils::Patch<uint8_t>(NullFunc, 0xc3);
 }

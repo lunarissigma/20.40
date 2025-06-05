@@ -71,14 +71,22 @@ public:
 			ConstructAbilitySpec = ImageBase + 0x5247bc8;
 			InternalGiveAbility = ImageBase + 0x5250bd8;
 			StartNewSafeZonePhase = ImageBase + 0x66151a8;
-			ReadyToStartMatchVft = ImageBase + 0x118;
-			SpawnDefaultPawnForVft = ImageBase + 0xdb;
-			ServerAcknowledgePossessionVft = ImageBase + 0x125;
-			HandleStartingNewPlayerVft = ImageBase + 0xe1;
-			ServerExecuteInventoryItemVft = ImageBase + 0x231;
-			ServerAttemptAircraftJumpVft = ImageBase + 0x9f;
-			InternalServerTryActivateAbilityVft = ImageBase + 0x10b;
+			ReadyToStartMatchVft = 0x118;
+			SpawnDefaultPawnForVft = 0xdb;
+			ServerAcknowledgePossessionVft = 0x125;
+			HandleStartingNewPlayerVft = 0xe1;
+			ServerExecuteInventoryItemVft = 0x231;
+			ServerAttemptAircraftJumpVft = 0x9f;
+			InternalServerTryActivateAbilityVft = 0x10b;
 			GameSessionPatch = ImageBase + 0x1207905;
+
+			NullFuncs.push_back(ImageBase + 0x4834b50);
+			NullFuncs.push_back(ImageBase + 0xd4fc70);
+			NullFuncs.push_back(ImageBase + 0xdbd0b4);
+			NullFuncs.push_back(ImageBase + 0xdbe928);
+			NullFuncs.push_back(ImageBase + 0xdbdeb4);
+			NullFuncs.push_back(ImageBase + 0x18aca00);
+			NullFuncs.push_back(ImageBase + 0x6eb0d6c);
 
 			return 0;
 		}

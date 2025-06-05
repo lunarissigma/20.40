@@ -59,24 +59,6 @@ public:
 		return (_Ot*)FindObject(ObjectPath, Class);
 	}
 
-	static TArray<AActor*> GetAll(UClass* Class);
-
-	template <typename _At = AActor>
-	__forceinline static TArray<_At*> GetAll(UClass* Class)
-	{
-		return GetAll(Class);
-	}
-
-	template <typename _At = AActor>
-	__forceinline static TArray<_At*> GetAll()
-	{
-		return GetAll(_At::StaticClass());
-	}
-
-	static AActor* SpawnActor(UClass* Class, FTransform& Transform, AActor* Owner = nullptr);
-
-	static AActor* SpawnActor(UClass* Class, FVector& Loc, FRotator& Rot, AActor* Owner = nullptr);
-
 	template <typename T = AActor>
 	static T* SpawnActorUnfinished(UClass* Class, FVector Loc, FRotator Rot = {}, AActor* Owner = nullptr)
 	{
@@ -93,29 +75,37 @@ public:
 		return (T*)UGameplayStatics::FinishSpawningActor(Actor, Transform);
 	};
 
-
-	template <typename T>
-	static T* SpawnActor(UClass* Class, FVector Loc, FRotator Rot = {}, AActor* Owner = nullptr)
+	template <class T>
+	static inline T* SpawnActor(FVector Location, AActor* Owner = nullptr, FRotator Rotation = FRotator{ 0, 0, 0 }, UClass* Class = T::StaticClass(), FVector Scale3D = { 1,1,1 }, ESpawnActorCollisionHandlingMethod SpawnMethod = ESpawnActorCollisionHandlingMethod::AlwaysSpawn)
 	{
-		return (T*)SpawnActor(Class, Loc, Rot, Owner);
-	}
+		FQuat Quat{};
+		FTransform Transform{};
 
-	template <typename T>
-	static T* SpawnActor(UClass* Class, FTransform& Transform, AActor* Owner = nullptr)
-	{
-		return (T*)SpawnActor(Class, Transform, Owner);
-	}
+		auto DEG_TO_RAD = 3.14159 / 180;
+		auto DIVIDE_BY_2 = DEG_TO_RAD / 2;
 
-	template <typename T>
-	static T* SpawnActor(FVector Loc, FRotator Rot = {}, AActor* Owner = nullptr)
-	{
-		return (T*)SpawnActor(T::StaticClass(), Loc, Rot, Owner);
-	}
+		auto SP = sin(Rotation.Pitch * DIVIDE_BY_2);
+		auto CP = cos(Rotation.Pitch * DIVIDE_BY_2);
 
-	template <typename T>
-	static T* SpawnActor(FTransform& Transform, AActor* Owner = nullptr)
-	{
-		return (T*)SpawnActor(T::StaticClass(), Transform, Owner);
+		auto SY = sin(Rotation.Yaw * DIVIDE_BY_2);
+		auto CY = cos(Rotation.Yaw * DIVIDE_BY_2);
+
+		auto SR = sin(Rotation.Roll * DIVIDE_BY_2);
+		auto CR = cos(Rotation.Roll * DIVIDE_BY_2);
+
+		Quat.X = CR * SP * SY - SR * CP * CY;
+		Quat.Y = -CR * SP * CY - SR * CP * SY;
+		Quat.Z = CR * CP * SY - SR * SP * CY;
+		Quat.W = CR * CP * CY + SR * SP * SY;
+
+		Transform.Rotation = Quat;
+		Transform.Scale3D = Scale3D;
+		Transform.Translation = Location;
+
+		auto Actor = UGameplayStatics::GetDefaultObj()->BeginDeferredActorSpawnFromClass(UWorld::GetWorld(), Class, Transform, SpawnMethod, Owner);
+		if (Actor)
+			UGameplayStatics::GetDefaultObj()->FinishSpawningActor(Actor, Transform);
+		return (T*)Actor;
 	}
 
 	template <typename _Ot = void*>

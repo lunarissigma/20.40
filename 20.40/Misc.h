@@ -9,6 +9,7 @@ private:
 	static int GetNetMode();
 	static bool RetTrue();
 	static bool ReturnFalse();
+	static void ReturnNull();
 public:
 	static void Hook();
 };

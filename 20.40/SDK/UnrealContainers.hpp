@@ -12,6 +12,7 @@
 #include <stdexcept>
 #include <iostream>
 #include "UtfN.hpp"
+#include "../Offsets.h"
 
 namespace UC
 {	
@@ -204,6 +205,49 @@ namespace UC
 		};
 	}
 
+	class FMemory
+	{
+	public:
+		static __forceinline void* InternalRealloc(void* _a1, __int64 _a2, unsigned int _a3) {
+			return ((void* (*)(void*, __int64, unsigned int)) Sigma::Offsets::Realloc)(_a1, _a2, _a3);
+		}
+
+		template<typename T = void>
+		static inline T* Realloc(void* Ptr, uint64 Size, uint32 Alignment = 0x0)
+		{
+			return (T*)InternalRealloc(Ptr, Size, Alignment);
+		}
+
+		template<typename T>
+		static inline T* ReallocForType(void* Ptr, uint64 Count)
+		{
+			return (T*)InternalRealloc(Ptr, Count * sizeof(T), alignof(T));
+		}
+
+
+		template<typename T = void>
+		static inline T* Malloc(uint64 Size, uint32 Alignment = 0x0)
+		{
+			return Realloc<T>(nullptr, Size, Alignment);
+		}
+
+		template<typename T>
+		static inline T* MallocForType(uint64 Count)
+		{
+			return ReallocForType<T>(nullptr, Count);
+		}
+
+		static inline void Free(void* ptr)
+		{
+			Realloc(ptr, 0, 0);
+		}
+
+		template<typename T>
+		static inline void FreeForType(T* ptr)
+		{
+			ReallocForType<T>(ptr, 0);
+		}
+	};
 
 	template <typename KeyType, typename ValueType>
 	class TPair
@@ -278,6 +322,17 @@ namespace UC
 			NumElements++;
 
 			return true;
+		}
+
+
+		inline void Free()
+		{
+			if (Data)
+				FMemory::Free(Data);
+
+			MaxElements = 0;
+			NumElements = 0;
+			Data = nullptr;
 		}
 
 		inline bool Remove(int32 Index)

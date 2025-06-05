@@ -1754,6 +1754,8 @@ public:
 	uint8                                         Pad_38[0x8];                                       // 0x0038(0x0008)(Fixing Size After Last Property [ Dumper-7 ])
 	struct FVector                                Scale3D;                                           // 0x0040(0x0018)(Edit, BlueprintVisible, ZeroConstructor, SaveGame, IsPlainOldData, NoDestructor, HasGetValueTypeHash, NativeAccessSpecifierPublic)
 	uint8                                         Pad_58[0x8];                                       // 0x0058(0x0008)(Fixing Struct Size After Last Property [ Dumper-7 ])
+	FTransform() {}
+	FTransform(FVector loc, FQuat rot, FVector scale = { 1, 1, 1 }) : Translation(loc), Rotation(rot), Scale3D(scale) {}
 };
 static_assert(alignof(FTransform) == 0x000010, "Wrong alignment on FTransform");
 static_assert(sizeof(FTransform) == 0x000060, "Wrong size on FTransform");
