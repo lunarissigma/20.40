@@ -17,8 +17,9 @@ void Main() {
     MH_EnableHook(MH_ALL_HOOKS);
     UWorld::GetWorld()->OwningGameInstance->LocalPlayers.Remove(0);
     *(bool*)Sigma::Offsets::GIsClient = false;
+    *(bool*)Sigma::Offsets::GIsSomething = true;
     UKismetSystemLibrary::ExecuteConsoleCommand(UWorld::GetWorld(), L"open Artemis_Terrain", nullptr);
-    UKismetSystemLibrary::ExecuteConsoleCommand(UWorld::GetWorld(), TEXT("log LogFortUIDirector off"), nullptr);
+    //UKismetSystemLibrary::ExecuteConsoleCommand(UWorld::GetWorld(), TEXT("log LogFortUIDirector off"), nullptr);
 }
 
 BOOL APIENTRY DllMain(HMODULE Module, DWORD Reason, LPVOID Reserved)

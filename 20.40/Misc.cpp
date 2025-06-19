@@ -46,6 +46,5 @@ void Misc::Hook()
     Utils::Hook(Sigma::Offsets::WorldNetMode, GetNetMode);
     Utils::Hook(Sigma::Offsets::ImageBase + 0x1204e80, ReturnFalse);
     Utils::Hook(Sigma::Offsets::ImageBase + 0x83f36d4, ReturnFalse);
-    for (auto& NullFunc : Sigma::Offsets::NullFuncs)
-        Utils::Patch<uint8_t>(NullFunc, 0xc3);
+    for (auto& NullFunc : Sigma::Offsets::NullFuncs) Utils::Patch<uint8_t>(NullFunc, 0xc3);
 }

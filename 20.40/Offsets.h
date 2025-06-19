@@ -44,6 +44,7 @@ public:
 		static inline uint32_t InternalServerTryActivateAbilityVft;
 		static inline uint64_t GameSessionPatch;
 		static inline uint64_t EncryptionPatch;
+		static inline uint64_t GIsSomething;
 
 		static inline std::vector<uint64_t> NullFuncs;
 
@@ -78,6 +79,7 @@ public:
 			ServerExecuteInventoryItemVft = 0x231;
 			ServerAttemptAircraftJumpVft = 0x9f;
 			InternalServerTryActivateAbilityVft = 0x10b;
+			GIsSomething = GIsClient + 1;
 			GameSessionPatch = ImageBase + 0x1207905;
 
 			NullFuncs.push_back(ImageBase + 0x4834b50);

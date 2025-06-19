@@ -16,7 +16,6 @@ bool GameMode::ReadyToStartMatch(AFortGameModeAthena* Gamemode)
 	static bool bReady = false;
 	if (!bReady)
 	{
-
 		bReady = true;
 
 		Gamemode->WarmupRequiredPlayerCount = 1;
@@ -84,24 +83,6 @@ bool GameMode::ReadyToStartMatch(AFortGameModeAthena* Gamemode)
 
 			UWorld::GetWorld()->LevelCollections[0].NetDriver = UWorld::GetWorld()->NetDriver;
 			UWorld::GetWorld()->LevelCollections[1].NetDriver = UWorld::GetWorld()->NetDriver;
-
-
-			//AbilitySets.Add(UObject::FindObject<UFortAbilitySet>("/Game/Abilities/Player/Generic/Traits/DefaultPlayer/GAS_AthenaPlayer.GAS_AthenaPlayer"));
-
-			//for (int i = 0; i < UObject::GObjects->Num(); i++)
-			//{
-			//	auto Object = UObject::GObjects->GetByIndex(i);
-
-			//	if (!Object || !Object->Class || Object->IsDefaultObject())
-			//		continue;
-
-			//	if (auto GameFeatureData = reinterpret_cast<UFortGameFeatureData*>(Object))
-			//	{
-			//		auto AbilitySet = GameFeatureData->PlayerAbilitySet.Get();
-			//		if (!AbilitySet) continue;
-			//		AbilitySets.Add(AbilitySet);
-			//	}
-			//}
 
 			SetConsoleTitleA("20.40: Listening");
 			Gamemode->bWorldIsReady = true;
